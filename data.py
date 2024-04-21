@@ -4,8 +4,8 @@ from datasets import Dataset, Features, Value, Sequence, DatasetDict
 
 PREDICT_LENGTH=365
 
-def load_all_data():
-    df = pd.read_excel('all_data.xlsx')
+def load_all_data(filename):
+    df = pd.read_excel(filename)
     first_date_str = df['Date'].iloc[0]
     # first_date = pd.to_datetime(first_date_str)
     first_date = datetime.strptime(str(first_date_str), "%Y-%m-%d %H:%M:%S")
@@ -21,6 +21,7 @@ def load_all_data():
         datas.append(df[col_name].to_list())
 
     num_features = len(datas)
+    # num_features = 2
     print(f"The dataset has {num_features} features, each feature has {len(datas[0])} data points")
     train_data = test_data = valid_data =  {}
     num_train_row = number_of_dates - 2*PREDICT_LENGTH
@@ -64,5 +65,5 @@ def load_all_data():
     return dataset
 
 if __name__ == '__main__':
-    dataset = load_all_data()
+    dataset = load_all_data("all_data_smoothed.xlsx")
     print(dataset)
